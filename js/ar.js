@@ -189,25 +189,25 @@ VideoSelet = function (event) {
         $('#AndroidVid').on("error", loadVidError)
     }
     if(can.webm || can.hevc){
-  
-        $.ajax({
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            url: "/visit",
-            dataType: "json",
-            data: JSON.stringify({ video: Titles[matchedIndex] }),
-            success: function (result) {
-              if (result.msg == "T") {
-                $("#vidplayer")[0].load();
-                $("#vidplayer").fadeIn();
-              }
-              else {
-                //Something wrong
-                $("#dialog>p").html("網路發生問題: 無法取得動畫!");
-                $("#dialog").dialog(dialogOption);
-              }
-            }
-          });
+        $("#vidplayer")[0].load();
+        $("#vidplayer").fadeIn();
+        // $.ajax({
+        //     type: "POST",
+        //     contentType: "application/json; charset=utf-8",
+        //     url: "/visit",
+        //     dataType: "json",
+        //     data: JSON.stringify({ video: Titles[matchedIndex] }),
+        //     success: function (result) {
+        //       if (result.msg == "T") {
+               
+        //       }
+        //       else {
+        //         //Something wrong
+        //         $("#dialog>p").html("網路發生問題: 無法取得動畫!");
+        //         $("#dialog").dialog(dialogOption);
+        //       }
+        //     }
+        //   });
     }
 };
 
@@ -232,9 +232,9 @@ window.onload = function () {
     window.descriptorLength = 128;
     window.blurRadius = 3; //模糊參數可調
     window.matchLength = 30;
-    window.Threshold = 400000; //distance matching threshold
+    window.Threshold = 300000; //distance matching threshold
     window.fps = 60; //captrue image, frequence per second
-    window.matchThreshold = 80 //lowbound of match length
+    window.matchThreshold = 50 //lowbound of match length
     $("#vidplayer").on("ended", function () {
         if (!canDetection) {
             canDetection = true;
@@ -297,7 +297,7 @@ async  function doMatch () {
             }
             //console.log("Label:"+Titles[label]+", Distance:"+distSum+" Matches:"+matches.length)
             //judgement
-            if (matches.length > matchThreshold && distSum < Threshold*(matches.length/matchThreshold)){
+            if (matches.length > matchThreshold && distSum < Threshold){
                 candidate[label]++;
                 matchedOnec = true;
                 correctBar.isStop=false;
